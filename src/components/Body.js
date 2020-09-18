@@ -16,12 +16,8 @@ function Body({ spotify }) {
       dispatch({
         type: "TOGGLE_SIDEBAR",
         style: {
-          // backgroundColor: "#040404",
-          // color: "white",
-          // height: "100vh",
           width: "300px",
           transition: "0.3s",
-          // width: "100%",
         },
       });
       setToggle("open");
@@ -38,11 +34,54 @@ function Body({ spotify }) {
     }
   };
 
+  // spotify:playlist:0AtrH0cbSnWKjYM98ACQYW
+
+  // FIXME: id?
+
+  const playPlaylist = (id) => {
+    spotify
+      .play({
+        context_uri: playlist.uri,
+      })
+      .then((res) => {
+        spotify.getMyCurrentPlayingTrack.then((r) => {
+          dispatch({
+            type: "SET_ITEM",
+            item: r.item,
+          });
+          dispatch({
+            type: "SET_PLAYING",
+            playing: true,
+          });
+        });
+      });
+  };
+
+  const playSong = (id) => {
+    spotify
+      .play({
+        uris: [`spotify:track:${id}`],
+      })
+      .then((res) => {
+        spotify.getMyCurrentPlayingTrack().then((r) => {
+          dispatch({
+            type: "SET_ITEM",
+            item: r.item,
+          });
+          dispatch({
+            type: "SET_PLAYING",
+            playing: true,
+          });
+        });
+      });
+  };
+
   return (
     <div className="body">
       <button onClick={toggleSidebar} className="body__sidebarOpenButton">
         ☰
       </button>
+
       <Header spotify={spotify} />
 
       <div className="body__info">
@@ -53,16 +92,20 @@ function Body({ spotify }) {
           <p>{playlist?.description}</p>
         </div>
       </div>
+
       <div className="body__songs">
         <div className="body__icons">
-          <PlayArrowIcon className="body__shuffle" />
+          <PlayArrowIcon
+            className="body__shuffle"
+            onClick={() => playPlaylist(playlist.id)}
+          />
           <FavoriteIcon fontSize="large" />
           <MoreHorizIcon />
         </div>
 
         {/* list of songs */}
         {playlist?.tracks.items.map((item, index) => (
-          <SongRow key={index} track={item.track} />
+          <SongRow key={index} track={item.track} playSong={playSong} />
         ))}
       </div>
     </div>

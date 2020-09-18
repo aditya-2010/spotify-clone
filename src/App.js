@@ -9,7 +9,7 @@ import { useStateValue } from "./StateProvider";
 const spotify = new SpotifyWebApi();
 
 function App() {
-  const [{ token, playlist, playlists }, dispatch] = useStateValue();
+  const [{ token, playlist, playlists, user }, dispatch] = useStateValue();
   // const [playl, setPlayl] = useState(null);
 
   useEffect(() => {
@@ -26,6 +26,11 @@ function App() {
       spotify.setAccessToken(_token);
       // console.log(spotify);
 
+      dispatch({
+        type: "SET_SPOTIFY",
+        spotify,
+      });
+
       spotify.getMe().then((user) => {
         // console.log("USER >>>", user);
         dispatch({
@@ -35,15 +40,13 @@ function App() {
       });
 
       spotify.getUserPlaylists().then((playlists) => {
-        // setPlayl({ playlists });
-        // console.log(playl);
         dispatch({
           type: "SET_PLAYLISTS",
           playlists,
         });
       });
 
-      console.log("IN IF BLOCK >>>>>>>>>>>>>>", playlists);
+      // console.log("IN IF BLOCK >>>>>>>>>>>>>>", playlists);
 
       spotify.getPlaylist("0AtrH0cbSnWKjYM98ACQYW").then((response) =>
         dispatch({
@@ -51,8 +54,15 @@ function App() {
           playlist: response,
         })
       );
+
+      spotify.getMyTopArtists().then((res) => {
+        dispatch({
+          type: "SET_TOP_ARTISTS",
+          top_artists: res,
+        });
+      });
     }
-  }, []);
+  }, [token, dispatch]);
 
   // console.log("USER >>>", user);
   // console.log("TOKEN >>>", token);
@@ -63,8 +73,6 @@ function App() {
   return (
     <div className="app">
       {token ? <Player spotify={spotify} /> : <Login />}
-
-      {/* <Login /> */}
     </div>
   );
 }

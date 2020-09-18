@@ -7,6 +7,7 @@ export const initialState = {
   playlist: null,
   playing: false,
   item: null,
+  spotify: null,
   sidebar: {},
 };
 
@@ -40,6 +41,30 @@ export const reducer = (state, action) => {
       return {
         ...state,
         playlist: action.playlist,
+      };
+
+    case "SET_PLAYING":
+      return {
+        ...state,
+        playing: action.playing,
+      };
+
+    case "SET_ITEM":
+      return {
+        ...state,
+        item: action.item,
+      };
+
+    case "SET_TOP_ARTISTS":
+      return {
+        ...state,
+        top_artists: action.top_artists,
+      };
+
+    case "SET_SPOTIFY":
+      return {
+        ...state,
+        spotify: action.spotify,
       };
 
     default:

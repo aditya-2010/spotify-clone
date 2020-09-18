@@ -13,7 +13,7 @@ function Player({ spotify }) {
       </div>
 
       <div className="player__footer">
-        <Footer />
+        <Footer spotify={spotify} />
       </div>
     </div>
   );
