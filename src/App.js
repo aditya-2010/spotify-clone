@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Login from "./components/Login";
 import { getTokenFromUrl } from "./spotify";
@@ -9,8 +9,7 @@ import { useStateValue } from "./StateProvider";
 const spotify = new SpotifyWebApi();
 
 function App() {
-  const [{ token, playlist, playlists, user }, dispatch] = useStateValue();
-  // const [playl, setPlayl] = useState(null);
+  const [{ token }, dispatch] = useStateValue();
 
   useEffect(() => {
     const hash = getTokenFromUrl();
@@ -32,7 +31,6 @@ function App() {
       });
 
       spotify.getMe().then((user) => {
-        // console.log("USER >>>", user);
         dispatch({
           type: "SET_USER",
           user,
@@ -45,8 +43,6 @@ function App() {
           playlists,
         });
       });
-
-      // console.log("IN IF BLOCK >>>>>>>>>>>>>>", playlists);
 
       spotify.getPlaylist("0AtrH0cbSnWKjYM98ACQYW").then((response) =>
         dispatch({
@@ -63,12 +59,6 @@ function App() {
       });
     }
   }, [token, dispatch]);
-
-  // console.log("USER >>>", user);
-  // console.log("TOKEN >>>", token);
-  // console.log("PLAYLISTS >>>", playlists);
-  // console.log("PLAYLIST >>>", playlist);
-  // console.log(spotify);
 
   return (
     <div className="app">

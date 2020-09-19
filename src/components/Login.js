@@ -1,6 +1,5 @@
 import React from "react";
 import { loginUrl } from "../spotify";
-// import { Link } from "react-router-dom";
 import "../styles/Login.css";
 
 function Login() {

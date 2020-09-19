@@ -5,7 +5,7 @@
   color: white;
   padding: 20px;
   overflow-y: overlay;
-  /* -webkit-scrollbar: none; */
+  scroll-behavior: smooth;
 }
 
 .body::-webkit-scrollbar {

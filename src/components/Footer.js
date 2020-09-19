@@ -12,7 +12,7 @@ import VolumeDownIcon from "@material-ui/icons/VolumeDown";
 import { useStateValue } from "./../StateProvider";
 
 function Footer({ spotify }) {
-  const [{ token, item, playing }, dispatch] = useStateValue();
+  const [{ item, playing }, dispatch] = useStateValue();
 
   useEffect(() => {
     spotify.getMyCurrentPlaybackState().then((r) => {
@@ -28,7 +28,7 @@ function Footer({ spotify }) {
         item: r.item,
       });
     });
-  }, [spotify]);
+  }, [spotify, dispatch]);
 
   const handlePlayPause = () => {
     if (playing) {
@@ -80,7 +80,7 @@ function Footer({ spotify }) {
         <img
           className="footer__albumLogo"
           src={item?.album.images[0].url}
-          alt={item?.name}
+          alt=""
         />
 
         {item ? (
